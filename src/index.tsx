@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'antd/dist/antd.css'
+import 'moment/locale/ru';
+import { ConfigProvider } from 'antd';
+import ru_RU from 'antd/lib/locale/ru_RU';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<ConfigProvider locale={ru_RU}>
+			<App />
+		</ConfigProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
 );
