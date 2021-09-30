@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
-import { Card, Button, Tooltip  } from 'antd';
+import { FC } from 'react';
+import { Card, Button, Tooltip, Modal } from 'antd';
 import { User } from '../../store/bus/user/types';
-import { useDispatch } from 'react-redux';
-import { addNegativeRating, addPositiveRating , downRating, upRating} from '../../store/bus/user/actions';
 
 const { Meta } = Card;
+const { confirm } = Modal;
 
 type UserCardProps = {
     user: User;
@@ -13,9 +12,40 @@ type UserCardProps = {
 }
 
 const UserCard: FC<UserCardProps> = (props) => {
-    const dispatch = useDispatch();
 
+    const plus = () => {
+        props.up(props.user.id)
+        
+        if(props.user.rating >= 4) {
+ 
+            confirm({
+                content: `Нужно вознаградить ${props.user.first_name}. Сделать это?`,
+                onOk() {
+                  console.log('OK');
+                },
+                onCancel() {
+                  console.log('Закрыть');
+                },
+              });
+        }
+    }
+    
+    const minus = () => {
+        props.down(props.user.id)
 
+        if(props.user.rating <= -4) {
+            confirm({
+                content: `Пора забанить ${props.user.first_name}. Сделать это?`,
+                onOk() {
+                  console.log('OK');
+                },
+                onCancel() {
+                  console.log('Закрыть');
+                },
+              });
+        }
+        
+    }
 
     return (
         <Card
@@ -35,7 +65,7 @@ const UserCard: FC<UserCardProps> = (props) => {
                         type="primary" 
                         size="small" 
                         style={{marginRight: 5, width: 30}}
-                        onClick={() => props.up(props.user.id)}
+                        onClick={plus}
                     >
                         +
                     </Button>
@@ -46,7 +76,7 @@ const UserCard: FC<UserCardProps> = (props) => {
                         danger
                         size="small" 
                         style={{width: 30}}
-                        onClick={() => props.down(props.user.id)}
+                        onClick={minus}
                     >
                         -
                     </Button>

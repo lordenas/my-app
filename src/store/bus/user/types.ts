@@ -14,6 +14,7 @@ export type InitialStateUsers = {
 
 export type UserRequestType = {size: number; page: number};
 
+export type TypeRating = 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'
 
 export type User = {
     id: number;
@@ -53,5 +54,6 @@ export type User = {
         payment_method: string;
         term: string;
     },
-    rating: number;
+    rating: number; //adding props
+    typeRating: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'; //adding props
 }

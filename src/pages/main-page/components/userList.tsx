@@ -22,7 +22,7 @@ const MainPage: FC = () => {
 		<div className="card__block">
 			<Row>
 				{
-					userList.data.map((item) => (
+					userList.data.filter(i => i.typeRating === 'NEUTRAL').map((item) => (
 						<UserCard 
 							user={item}
 							key={item.id}

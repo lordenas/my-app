@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { addNegativeRating, addPositiveRating, currentPage, downRating, getUsers, upRating } from "./actions";
-import { InitialStateUsers, User } from "./types";
+import { InitialStateUsers } from "./types";
 
 export const initialState: InitialStateUsers = {
     currentPage: 1,
@@ -29,7 +29,7 @@ export const userReducer = createReducer(initialState, (builder) => {
         },
     }));
     builder.addCase(getUsers.fill, (state, { payload }) => {
-        let modified: User[] = payload.map((i) => ({...i, rating: 0, typeRating: 'NEUTRAL'}))
+        const modified = payload.map((i) => ({...i, rating: 0}))
         return {
             ...state,
             userList: {
@@ -53,41 +53,7 @@ export const userReducer = createReducer(initialState, (builder) => {
     }));
 
     builder.addCase(addPositiveRating, (state, { payload }) => {
-        const tempUserList: User[] = state.userList.data.map(i => {
-            if(i.id === payload) {
-                return {
-                    ...i, 
-                    rating: Math.min(i.rating + 1, 5),
-                    typeRating: i.rating + 1 > 0 ? 'POSITIVE' : 'NEGATIVE'
-                }
-            } else {
-                return i
-            }
-        });
-
-        return {
-            ...state,
-            userList: {
-                ...state.userList,
-                data: tempUserList,
-            },
-        }
-    });
-
-    builder.addCase(addNegativeRating, (state, { payload }) => {
-
-        const tempUserList: User[] = state.userList.data.map(i => {
-            if(i.id === payload) {
-                return {
-                    ...i, 
-                    rating: Math.max(i.rating - 1, -5),
-                    typeRating: i.rating - 1 > 0 ? 'POSITIVE' : 'NEGATIVE'
-                }
-            } else {
-                return i
-            }
-        });
-
+        const tempUserList = state.userList.data.filter(i => i.id !== payload);
         const positiveUserTemp = state.userList.data.filter(i => i.id === payload).map(i => ({...i, rating: i.rating + 1}))
         return {
             ...state,
@@ -95,11 +61,23 @@ export const userReducer = createReducer(initialState, (builder) => {
                 ...state.userList,
                 data: tempUserList,
             },
+            positiveUsersList: [...state.positiveUsersList, ...positiveUserTemp]
         }
     });
 
+    builder.addCase(addNegativeRating, (state, { payload }) => {
+        const tempUserList = state.userList.data.filter(i => i.id !== payload);
+        const negaveUserTemp = state.userList.data.filter(i => i.id === payload).map(i => ({...i, rating: i.rating + 1}));
 
-    
+        return {
+            ...state,
+            userList: {
+                ...state.userList,
+                data: tempUserList,
+            },
+            negativeUsersList:  [...state.negativeUsersList, ...negaveUserTemp]
+        }
+    });
 
     builder.addCase(upRating, (state, { payload }) => {
         const tempArray = state.positiveUsersList
