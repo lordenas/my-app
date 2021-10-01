@@ -2,7 +2,7 @@ import { Row } from 'antd';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserCard } from '../../../components';
-import { downgrade, upRating } from '../../../store/bus/user/actions';
+import { deleteUser, downgrade, upRating } from '../../../store/bus/user/actions';
 import { RootStore } from '../../../store/configureStore';
 
 const NegativeUser: FC = (props) => {
@@ -17,6 +17,10 @@ const NegativeUser: FC = (props) => {
         dispatch(downgrade({userId: id, type: 'NEGATIVE'}));
     }
 
+    const deleteAction = (id: number) => {
+        dispatch(deleteUser({userId: id, type: 'NEGATIVE'}))
+    }
+
     return (
         <div className="card__block">
 			<Row>
@@ -28,6 +32,7 @@ const NegativeUser: FC = (props) => {
                             up={upRatingButton}
                             down={downgradeButton}
                             showDelete
+                            deleteUser={deleteAction}
                         />
 					))
 				}

@@ -13,14 +13,13 @@ type UserCardProps = {
     up: (id: number) => void;
     down: (id: number) => void;
     showDelete?: boolean;
+    deleteUser?: (id: number) => void;
 }
 
 const UserCard: FC<UserCardProps> = (props) => {
     const dispatch = useDispatch();
 
-    const deleteUser = () => {
-        dispatch(rewardUser({userId: props.user.id}))
-    }
+
 
     const plus = () => {
         props.up(props.user.id)
@@ -53,6 +52,10 @@ const UserCard: FC<UserCardProps> = (props) => {
                 },
               });
         }
+    }
+
+    const deleteButton = () => {
+        props.deleteUser && props.deleteUser(props.user.id)
     }
 
     return (
@@ -100,7 +103,7 @@ const UserCard: FC<UserCardProps> = (props) => {
                                 danger 
                                 shape="circle" 
                                 icon={<DeleteOutlined />}
-                                onClick={deleteUser}
+                                onClick={deleteButton}
                             />
                         </Tooltip>
                     </div>

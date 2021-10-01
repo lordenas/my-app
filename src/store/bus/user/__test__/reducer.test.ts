@@ -6,7 +6,8 @@ import {
     upRating, 
     downgrade, 
     banUser, 
-    rewardUser 
+    rewardUser, 
+    deleteUser
 } from '../actions';
 import { axiosError, userMock } from '../../../../../test/mock'
 import _ from 'lodash';
@@ -162,9 +163,7 @@ describe('test user reducers', () => {
     test('вознаграждение пользователя', () => {
         let mockInitialState = _.cloneDeep(initialState);
         mockInitialState.positiveUsersList = [{...userMock}]
-        //@ts-ignore
-        console.log('___test', global.__)
-        
+
         expect(userReducer(mockInitialState, rewardUser({userId: 4122}))).toEqual({
             ...mockInitialState,
             positiveUsersList: [],
@@ -174,4 +173,38 @@ describe('test user reducers', () => {
             },
         })
     })
+    
+
+    describe('удаление пользователя', () => {
+        test('удаление пользователя из положительных', () => {
+            let mockInitialState = _.cloneDeep(initialState);
+            mockInitialState.positiveUsersList = [{...userMock}]
+
+            
+            expect(userReducer(mockInitialState, deleteUser({userId: 4122, type: 'POSITIVE'}))).toEqual({
+                ...mockInitialState,
+                positiveUsersList: [],
+                userList: {
+                    ...mockInitialState.userList,
+                    data: [{...userMock, rating: 0}]
+                },
+            })
+        })
+
+        test('удаление пользователя из отрицательных', () => {
+            let mockInitialState = _.cloneDeep(initialState);
+            mockInitialState.negativeUsersList = [{...userMock}]
+
+            
+            expect(userReducer(mockInitialState, deleteUser({userId: 4122, type: 'NEGATIVE'}))).toEqual({
+                ...mockInitialState,
+                negativeUsersList: [],
+                userList: {
+                    ...mockInitialState.userList,
+                    data: [{...userMock, rating: 0}]
+                },
+            })
+        })
+    })
+
 })

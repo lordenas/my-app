@@ -5,6 +5,7 @@ import {
     banUser, 
     cleareUser, 
     currentPage, 
+    deleteUser, 
     downgrade, 
     getUsers, 
     rewardUser, 
@@ -156,9 +157,9 @@ export const userReducer = createReducer(initialState, (builder) => {
         ...state,
         negativeUsersList: state.negativeUsersList.filter(i => i.id !== payload.userId)
     }));
+
     //вознаграждение пользователя
     //по ТЗ его нужно отправить в левый список
-    //это же действие подходит и для удаления при достижении 0
     builder.addCase(rewardUser, (state, { payload }) => {
         let findUser = _.cloneDeep(state.positiveUsersList.filter(i => i.id === payload.userId))
         findUser[0].rating = 0
@@ -172,6 +173,32 @@ export const userReducer = createReducer(initialState, (builder) => {
             }
         }
     });
+
+    //удаление пользователя
+    builder.addCase(deleteUser, (state, { payload }) => {
+        let findUser: User[] = [];
+        if(payload.type === 'POSITIVE') {
+            findUser = _.cloneDeep(state.positiveUsersList.filter(i => i.id === payload.userId))
+            findUser[0].rating = 0
+        }
+
+        if(payload.type === 'NEGATIVE') {
+            findUser = _.cloneDeep(state.negativeUsersList.filter(i => i.id === payload.userId))
+            findUser[0].rating = 0
+        }
+
+        return {
+            ...state,
+            positiveUsersList: state.positiveUsersList.filter(i => i.id !== payload.userId),
+            negativeUsersList: state.negativeUsersList.filter(i => i.id !== payload.userId),
+            userList: {
+                ...state.userList,
+                data: [...state.userList.data, ...findUser]
+            }
+        }
+    });
+
+
 
     //проверка на сохраненых пользователй с 0 рейтингом;
     builder.addCase(cleareUser, (state) => {

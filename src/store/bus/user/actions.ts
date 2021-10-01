@@ -18,5 +18,6 @@ export const downgrade = createAction<{userId: number, type: TypeRating}>('DOWN_
 
 export const banUser = createAction<{userId: number}>('BAN_USER');
 export const rewardUser = createAction<{userId: number}>('REWARD_USER');
+export const deleteUser = createAction<{userId: number, type: TypeRating}>('DELETE_USER');
 
 export const cleareUser = createAction('CLEARE_USER');
