@@ -11,23 +11,23 @@ const MainPage: FC = () => {
 	const { userList } = useSelector((store: RootStore) => store.users)
 
 	const upRatingButton = (id: number) => {
-        dispatch(addPositiveRating(id));
+        dispatch(addPositiveRating({userId: id}));
     }
 
-    const downRatingButton = (id: number) => {
-        dispatch(addNegativeRating(id));
+    const downgradeButton = (id: number) => {
+        dispatch(addNegativeRating({userId: id}));
     }
 
 	return (
 		<div className="card__block">
 			<Row>
 				{
-					userList.data.filter(i => i.typeRating === 'NEUTRAL').map((item) => (
+					userList.data.map((item) => (
 						<UserCard 
 							user={item}
 							key={item.id}
 							up={upRatingButton}
-                            down={downRatingButton}
+                            down={downgradeButton}
 						/>
 					))
 				}

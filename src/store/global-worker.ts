@@ -27,11 +27,9 @@ export function* makeRequestWithSpinner<T, D = void>(options: OptionsType<T, D>)
     } = options;
 
     try {
-        console.log('test pratams___', fetcherParam)
         yield put(startFetching());
 
         const result: AxiosResponse<T> = yield call(fetcher, fetcherParam);
-        console.log('____RESULT-FETCH____', result)
 
         yield put(fill(result.data));
 

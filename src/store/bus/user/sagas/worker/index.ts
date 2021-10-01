@@ -1,4 +1,4 @@
-import { currentPage, getUsers} from "../../actions"
+import { cleareUser, currentPage, getUsers} from "../../actions"
 
 import { UsersApi } from "../../../../../services/index"
 import { makeRequestWithSpinner } from "../../../../global-worker"
@@ -17,8 +17,11 @@ export function* userList({payload}: {payload: UserRequestType}) {
             setErrorAction: getUsers.error,
             fetcherParam: payload,
         }
-
+        //глобальный сага воркер
+        //подходит для простых типичных запросов
         yield makeRequestWithSpinner<User[], UserRequestType>(options)
+
+        yield put(cleareUser())
     } catch(e) {
 
     }

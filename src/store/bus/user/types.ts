@@ -9,12 +9,13 @@ export type InitialStateUsers = {
     },
     positiveUsersList: User[];
     negativeUsersList: User[];
+    activeTab: '1' | '2'
 }
 
 
 export type UserRequestType = {size: number; page: number};
 
-export type TypeRating = 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'
+export type TypeRating = 'POSITIVE' | 'NEGATIVE'
 
 export type User = {
     id: number;
@@ -25,9 +26,9 @@ export type User = {
     username: string;
     email: string;
     avatar: string;
-    gender: "Male" | "Female" | "Genderfluid";
+    gender: string;
     phone_number: string;
-    social_insurance_number: number;
+    social_insurance_number: string;
     date_of_birth: string;
     employment: {
         title: string;
@@ -37,7 +38,7 @@ export type User = {
         city: string;
         street_name: string;
         street_address: string;
-        zip_code: number;
+        zip_code: string;
         state: string;
         country: string;
         coordinates: {
@@ -46,7 +47,7 @@ export type User = {
         }
     },
     credit_card: {
-        cc_number: number;
+        cc_number: string;
     },
     subscription: {
         plan: string;
@@ -54,6 +55,5 @@ export type User = {
         payment_method: string;
         term: string;
     },
-    rating: number; //adding props
-    typeRating: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'; //adding props
+    rating: number; //added property 
 }

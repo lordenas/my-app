@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 import { createActionTypes, createApiActions } from "../../rootActions";
-import { User, UserRequestType } from "./types";
+import { TypeRating, User, UserRequestType } from "./types";
 
 export const getUsers = createApiActions<UserRequestType, User[]>(
     createActionTypes("USER")
@@ -8,9 +8,15 @@ export const getUsers = createApiActions<UserRequestType, User[]>(
 
 export const currentPage = createAction<number>('SET_PAGE_USER');
 
-export const addPositiveRating = createAction<number>('SET_ADD_POSITIVE');
-export const addNegativeRating = createAction<number>('SET_ADD_NEGATIVE');
+//экшены для левого списка
+export const addPositiveRating = createAction<{userId: number}>('SET_ADD_POSITIVE');
+export const addNegativeRating = createAction<{userId: number}>('SET_ADD_NEGATIVE');
 
-export const upRating = createAction<number>('UP_RATING');
-export const downRating = createAction<number>('DOWN_RATING');
+//экшены для вкладок
+export const upRating = createAction<{userId: number, type: TypeRating}>('UP_RATING');
+export const downgrade = createAction<{userId: number, type: TypeRating}>('DOWN_RATING');
 
+export const banUser = createAction<{userId: number}>('BAN_USER');
+export const rewardUser = createAction<{userId: number}>('REWARD_USER');
+
+export const cleareUser = createAction('CLEARE_USER');

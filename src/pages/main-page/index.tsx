@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { Layout, Row, Col, Button } from 'antd';
 import { Content } from "antd/lib/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { /* getNextUsers, */ getUsers } from "../../store/bus/user/actions";
+import { getUsers } from "../../store/bus/user/actions";
 import { RootStore } from "../../store/configureStore";
 import UserList from './components/userList'
 import GradeUsers from './components/grade-users';
@@ -20,7 +20,7 @@ const MainPage: FC = () => {
     const getUsersList = (data: UserRequestType = {page: 1, size: 3}) => {
         dispatch(getUsers.async({...data}));
     }
-    
+
     return (
         <Layout>
             <div>

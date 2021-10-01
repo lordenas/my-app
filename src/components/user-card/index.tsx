@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import { Card, Button, Tooltip, Modal } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { User } from '../../store/bus/user/types';
+import { useDispatch } from 'react-redux';
+import { banUser, rewardUser } from '../../store/bus/user/actions';
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -9,9 +12,15 @@ type UserCardProps = {
     user: User;
     up: (id: number) => void;
     down: (id: number) => void;
+    showDelete?: boolean;
 }
 
 const UserCard: FC<UserCardProps> = (props) => {
+    const dispatch = useDispatch();
+
+    const deleteUser = () => {
+        dispatch(rewardUser({userId: props.user.id}))
+    }
 
     const plus = () => {
         props.up(props.user.id)
@@ -21,7 +30,7 @@ const UserCard: FC<UserCardProps> = (props) => {
             confirm({
                 content: `Нужно вознаградить ${props.user.first_name}. Сделать это?`,
                 onOk() {
-                  console.log('OK');
+                    dispatch(rewardUser({userId: props.user.id}))
                 },
                 onCancel() {
                   console.log('Закрыть');
@@ -37,14 +46,13 @@ const UserCard: FC<UserCardProps> = (props) => {
             confirm({
                 content: `Пора забанить ${props.user.first_name}. Сделать это?`,
                 onOk() {
-                  console.log('OK');
+                    dispatch(banUser({userId: props.user.id}))
                 },
                 onCancel() {
-                  console.log('Закрыть');
+                    console.log('Закрыть');
                 },
               });
         }
-        
     }
 
     return (
@@ -59,6 +67,7 @@ const UserCard: FC<UserCardProps> = (props) => {
             cover={<img alt="example" src={props.user.avatar} />}
         >
             <Meta title={`${props.user.first_name + props.user.last_name}`} description={`Рейтинг: ${props.user.rating}`} />
+
             <div className="card__action">
                 <Tooltip title="Увеличить рейтинг">
                     <Button 
@@ -82,6 +91,20 @@ const UserCard: FC<UserCardProps> = (props) => {
                     </Button>
                 </Tooltip>
             </div>
+            {
+                props.user.rating === 0 && props.showDelete &&
+                    <div className="card__delete">
+                        <Tooltip title="Удалить">
+                            <Button 
+                                type="dashed" 
+                                danger 
+                                shape="circle" 
+                                icon={<DeleteOutlined />}
+                                onClick={deleteUser}
+                            />
+                        </Tooltip>
+                    </div>
+            }
         </Card>
     )
 }
