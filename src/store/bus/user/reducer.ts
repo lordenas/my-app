@@ -3,7 +3,7 @@ import {
     addNegativeRating, 
     addPositiveRating, 
     banUser, 
-    cleareUser, 
+    clearUser, 
     currentPage, 
     deleteUser, 
     downgrade, 
@@ -178,13 +178,13 @@ export const userReducer = createReducer(initialState, (builder) => {
     builder.addCase(deleteUser, (state, { payload }) => {
         let findUser: User[] = [];
         if(payload.type === 'POSITIVE') {
-            findUser = _.cloneDeep(state.positiveUsersList.filter(i => i.id === payload.userId))
-            findUser[0].rating = 0
+            findUser = _.cloneDeep(state.positiveUsersList.filter(i => i.id === payload.userId));
+            findUser[0].rating = 0;
         }
 
         if(payload.type === 'NEGATIVE') {
-            findUser = _.cloneDeep(state.negativeUsersList.filter(i => i.id === payload.userId))
-            findUser[0].rating = 0
+            findUser = _.cloneDeep(state.negativeUsersList.filter(i => i.id === payload.userId));
+            findUser[0].rating = 0;
         }
 
         return {
@@ -201,7 +201,7 @@ export const userReducer = createReducer(initialState, (builder) => {
 
 
     //проверка на сохраненых пользователй с 0 рейтингом;
-    builder.addCase(cleareUser, (state) => {
+    builder.addCase(clearUser, (state) => {
         let findUserPositive = state.positiveUsersList.filter(i => i.rating === 0)
         let findUserNegative= state.negativeUsersList.filter(i => i.rating === 0)
 
